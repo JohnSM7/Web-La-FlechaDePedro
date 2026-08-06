@@ -1,0 +1,139 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+
+const fotos = [
+  { src: '/images/pedro-sala.jpg', alt: 'Salón interior del restaurante La Flecha de Pedro en Móstoles', caption: 'Nuestro salón' },
+  { src: '/images/cochinillo.jpg', alt: 'Cochinillo asado en La Flecha de Pedro, Móstoles', caption: 'Cochinillo asado' },
+  { src: '/images/plato-estrella.jpg', alt: 'Cachopo especial La Flecha de Pedro', caption: 'Cachopo Especial Flecha' },
+  { src: '/images/cordero.jpg', alt: 'Carnes a la brasa en restaurante La Flecha de Pedro', caption: 'Carnes a la brasa' },
+  { src: '/images/pescado.jpg', alt: 'Platos de pescado fresco en La Flecha de Pedro, Móstoles', caption: 'Pescado fresco' },
+  { src: '/images/sangria.jpg', alt: 'Bebidas y vermú en La Flecha de Pedro', caption: 'Nuestros vermús' },
+  { src: '/images/mesa-puesta.jpg', alt: 'Mesa preparada para celebración en La Flecha de Pedro', caption: 'Celebraciones' },
+  { src: '/images/local-lleno.jpg', alt: 'Ambiente del restaurante La Flecha de Pedro lleno de clientes', caption: 'Ambiente familiar' },
+  { src: '/images/familia-mesa.jpg', alt: 'Familia disfrutando de una comida en La Flecha de Pedro', caption: 'Momentos en familia' },
+  { src: '/images/grupos.jpg', alt: 'Eventos y grupos en La Flecha de Pedro, Móstoles', caption: 'Eventos y grupos' },
+];
+---
+<Layout title="Galería — Restaurante La Flecha de Pedro en Móstoles" description="Fotos del restaurante La Flecha de Pedro en Móstoles. Descubre nuestro salón, terraza, platos y ambiente familiar. Más de 30 años de cocina tradicional.">
+  <Navbar />
+  <main>
+    <!-- Hero -->
+    <section class="relative h-[35vh] min-h-[280px] flex items-center justify-center bg-charcoal-900">
+      <div class="absolute inset-0 bg-[url('/images/local-lleno.jpg')] bg-cover bg-center opacity-30"></div>
+      <div class="relative text-center px-5">
+        <p class="font-sans text-xs tracking-[0.3em] uppercase text-amber mb-3">La Flecha de Pedro</p>
+        <h1 class="font-display text-4xl md:text-6xl text-white">
+          Nuestra <span class="text-amber italic">galería</span>
+        </h1>
+      </div>
+    </section>
+
+    <!-- Gallery grid -->
+    <section class="py-16 md:py-24 bg-cream-50">
+      <div class="max-w-7xl mx-auto px-5 md:px-10">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {fotos.map((foto, i) => (
+            <button
+              class="gallery-item group relative aspect-[4/3] overflow-hidden rounded-lg cursor-pointer"
+              data-index={i}
+              data-src={foto.src}
+              data-alt={foto.alt}
+              data-caption={foto.caption}
+            >
+              <img
+                src={foto.src}
+                alt={foto.alt}
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-charcoal-900/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div class="absolute bottom-0 left-0 right-0 p-4">
+                  <p class="text-white font-sans text-sm font-semibold">{foto.caption}</p>
+                </div>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="fixed inset-0 z-[70] bg-charcoal-900/95 backdrop-blur-sm hidden items-center justify-center" role="dialog" aria-modal="true">
+      <button id="lb-close" class="absolute top-4 right-4 text-white/60 hover:text-white p-2 cursor-pointer z-10" aria-label="Cerrar">
+        <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+        </svg>
+      </button>
+      <button id="lb-prev" class="absolute left-4 top-1/2 -translate-y-1/2 text-white/60 hover:text-white p-2 cursor-pointer z-10" aria-label="Anterior">
+        <svg class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+        </svg>
+      </button>
+      <button id="lb-next" class="absolute right-4 top-1/2 -translate-y-1/2 text-white/60 hover:text-white p-2 cursor-pointer z-10" aria-label="Siguiente">
+        <svg class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+        </svg>
+      </button>
+      <div class="max-w-5xl max-h-[85vh] px-16">
+        <img id="lb-img" src="" alt="" class="max-w-full max-h-[75vh] object-contain rounded-lg" />
+        <p id="lb-caption" class="text-white/70 text-sm text-center mt-4 font-sans"></p>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<script>
+  const items = document.querySelectorAll('.gallery-item');
+  const lightbox = document.getElementById('lightbox')!;
+  const lbImg = document.getElementById('lb-img') as HTMLImageElement;
+  const lbCaption = document.getElementById('lb-caption')!;
+  const lbClose = document.getElementById('lb-close')!;
+  const lbPrev = document.getElementById('lb-prev')!;
+  const lbNext = document.getElementById('lb-next')!;
+  let currentIdx = 0;
+  const total = items.length;
+
+  function openLightbox(idx: number) {
+    currentIdx = idx;
+    const item = items[idx] as HTMLElement;
+    lbImg.src = item.dataset.src!;
+    lbImg.alt = item.dataset.alt!;
+    lbCaption.textContent = item.dataset.caption!;
+    lightbox.classList.remove('hidden');
+    lightbox.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lightbox.classList.add('hidden');
+    lightbox.classList.remove('flex');
+    document.body.style.overflow = '';
+  }
+
+  function navigate(dir: number) {
+    currentIdx = (currentIdx + dir + total) % total;
+    openLightbox(currentIdx);
+  }
+
+  items.forEach((item, i) => {
+    item.addEventListener('click', () => openLightbox(i));
+  });
+
+  lbClose.addEventListener('click', closeLightbox);
+  lbPrev.addEventListener('click', () => navigate(-1));
+  lbNext.addEventListener('click', () => navigate(1));
+
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (lightbox.classList.contains('hidden')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') navigate(-1);
+    if (e.key === 'ArrowRight') navigate(1);
+  });
+</script>

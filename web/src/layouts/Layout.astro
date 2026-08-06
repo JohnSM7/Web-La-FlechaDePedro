@@ -1,5 +1,7 @@
 ---
 import '../styles/global.css';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import CookieBanner from '../components/CookieBanner.astro';
 
 interface Props {
   title?: string;
@@ -140,6 +142,12 @@ const schemaBreadcrumb = {
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#F5A01E" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="La Flecha" />
+    <link rel="apple-touch-icon" href="/images/logo.png" />
     <title>{title}</title>
 
     <!-- Geo meta tags -->
@@ -179,6 +187,8 @@ const schemaBreadcrumb = {
   </head>
   <body class="bg-texture overflow-x-hidden">
     <slot />
+    <WhatsAppButton />
+    <CookieBanner />
 
     <!-- Scroll-triggered reveal system -->
     <script>

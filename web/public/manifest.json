@@ -1,0 +1,20 @@
+{
+  "name": "La Flecha de Pedro",
+  "short_name": "La Flecha",
+  "description": "Restaurante de cocina tradicional en Móstoles, Madrid. Carta, menú del día y reservas.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAF7F2",
+  "theme_color": "#F5A01E",
+  "orientation": "portrait-primary",
+  "categories": ["food"],
+  "lang": "es",
+  "icons": [
+    {
+      "src": "/images/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

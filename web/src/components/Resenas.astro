@@ -1,0 +1,58 @@
+---
+import EyebrowTitle from './ui/EyebrowTitle.astro';
+
+const resenas = [
+  {
+    nombre: 'María G.',
+    texto: 'El cachopo es espectacular, el mejor que he probado fuera de Asturias. El trato de Pedro y su familia es como estar en casa. Llevamos viniendo más de 10 años.',
+    estrellas: 5,
+    fuente: 'Google',
+  },
+  {
+    nombre: 'Carlos R.',
+    texto: 'Menú del día insuperable por 25€. Platos caseros de verdad, cantidad generosa y postre incluido. El personal es encantador. Muy recomendable.',
+    estrellas: 5,
+    fuente: 'Google',
+  },
+  {
+    nombre: 'Ana P.',
+    texto: 'Celebramos aquí el cumpleaños de mi madre y fue perfecto. El salón privado, la atención personalizada y la comida de diez. Repetiremos seguro.',
+    estrellas: 5,
+    fuente: 'Google',
+  },
+  {
+    nombre: 'Javier M.',
+    texto: 'Las raciones son enormes y todo muy bueno. Las croquetas caseras y el pulpo son lo mejor. Terraza agradable en verano. Relación calidad-precio excelente.',
+    estrellas: 5,
+    fuente: 'Google',
+  },
+];
+
+function renderStars(count: number) {
+  return '★'.repeat(count) + '☆'.repeat(5 - count);
+}
+---
+<section class="py-20 md:py-32 bg-cream-100">
+  <div class="max-w-7xl mx-auto px-5 md:px-10">
+    <div class="text-center mb-12 reveal">
+      <EyebrowTitle eyebrow="Lo que dicen de nosotros" />
+      <h2 class="font-display text-3xl md:text-5xl text-charcoal-900">
+        Nuestros <span class="text-amber italic">clientes</span>
+      </h2>
+      <p class="text-charcoal-500 text-sm mt-3">Más de 850 reseñas en Google con una valoración media de 4,5 estrellas</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 reveal reveal-delay-1">
+      {resenas.map(resena => (
+        <div class="bg-white border border-cream-200 rounded-lg p-6 hover:shadow-[0_4px_20px_rgba(28,24,20,0.06)] transition-shadow duration-300">
+          <div class="text-amber text-lg tracking-wider mb-3">{renderStars(resena.estrellas)}</div>
+          <p class="text-charcoal-700 text-sm leading-relaxed mb-4 italic">"{resena.texto}"</p>
+          <div class="flex items-center justify-between">
+            <span class="font-sans font-semibold text-charcoal-900 text-sm">{resena.nombre}</span>
+            <span class="text-charcoal-400 text-xs">{resena.fuente}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,51 @@
+---
+---
+<div
+  id="cookie-banner"
+  class="fixed bottom-0 left-0 right-0 z-[60] transform translate-y-full transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)]"
+>
+  <div class="bg-charcoal-900/95 backdrop-blur-md border-t border-white/10">
+    <div class="max-w-7xl mx-auto px-5 md:px-10 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p class="text-white/70 text-xs leading-relaxed text-center sm:text-left">
+        Utilizamos cookies propias para mejorar tu experiencia. Al continuar navegando, aceptas su uso.
+        <a href="/cookies" class="text-amber hover:text-amber-dark underline ml-1">Más información</a>
+      </p>
+      <div class="flex items-center gap-3 flex-shrink-0">
+        <button
+          id="cookie-reject"
+          class="px-4 py-2 text-white/60 text-xs font-semibold uppercase tracking-wider hover:text-white transition-colors cursor-pointer"
+        >
+          Rechazar
+        </button>
+        <button
+          id="cookie-accept"
+          class="px-5 py-2 bg-amber text-charcoal-900 text-xs font-semibold uppercase tracking-wider rounded hover:bg-amber-dark transition-colors cursor-pointer"
+        >
+          Aceptar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const banner = document.getElementById('cookie-banner');
+  const acceptBtn = document.getElementById('cookie-accept');
+  const rejectBtn = document.getElementById('cookie-reject');
+
+  if (!localStorage.getItem('cookie_consent')) {
+    setTimeout(() => {
+      banner?.classList.remove('translate-y-full');
+      banner?.classList.add('translate-y-0');
+    }, 1500);
+  }
+
+  function hideBanner(consent: string) {
+    localStorage.setItem('cookie_consent', consent);
+    banner?.classList.add('translate-y-full');
+    banner?.classList.remove('translate-y-0');
+  }
+
+  acceptBtn?.addEventListener('click', () => hideBanner('accepted'));
+  rejectBtn?.addEventListener('click', () => hideBanner('rejected'));
+</script>
