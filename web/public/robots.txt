@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://laflechadepedro.com/sitemap.xml

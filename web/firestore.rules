@@ -1,0 +1,32 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Menu del dia — public read, admin-only write
+    match /menuDia/{document=**} {
+      allow read: if true;
+      allow write: if request.auth != null
+                   && request.auth.token.admin == true;
+    }
+
+    // Carta / platos — public read, admin-only write
+    match /cartaPlatos/{document=**} {
+      allow read: if true;
+      allow write: if request.auth != null
+                   && request.auth.token.admin == true;
+    }
+
+    // Config (plato estrella, precios, etc) — public read, admin-only write
+    match /config/{document=**} {
+      allow read: if true;
+      allow write: if request.auth != null
+                   && request.auth.token.admin == true;
+    }
+
+    // Block everything else
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

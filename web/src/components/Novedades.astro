@@ -1,0 +1,135 @@
+---
+import EyebrowTitle from './ui/EyebrowTitle.astro';
+import DishCard from './ui/DishCard.astro';
+
+const platos = [
+  { name: 'Cochinillo Asado', price: '22 €', image: '/images/cochinillo.jpg', badge: 'Estrella' },
+  { name: 'Carne a la Brasa', price: '18 €', image: '/images/cordero.jpg', badge: 'Nuevo' },
+  { name: 'Alcachofas de Temporada', price: '14 €', image: '/images/pescado.jpg', badge: 'Temporada' },
+  { name: 'Vermú de la Casa', price: '8 €', image: '/images/sangria.jpg', badge: '' },
+  { name: 'Tarta de Queso Casera', price: '6 €', image: '/images/familia-mesa.jpg', badge: 'Postre' },
+  { name: 'Celebraciones', price: '', image: '/images/grupos.jpg', badge: 'Grupos' },
+];
+---
+<section id="carta" class="py-20 md:py-32 bg-cream-100">
+  <div class="max-w-7xl mx-auto px-5 md:px-10">
+    <!-- Header -->
+    <div class="text-center mb-12 reveal">
+      <EyebrowTitle eyebrow="Nuestra cocina" />
+      <h2 class="font-display text-3xl md:text-5xl text-charcoal-900">
+        Platos que nos <span class="text-terracotta italic">definen</span>
+      </h2>
+    </div>
+
+    <!-- Carousel -->
+    <div class="relative reveal reveal-delay-1">
+      <div
+        id="novedades-carousel"
+        class="flex gap-6 overflow-x-auto pb-6 snap-x snap-mandatory carousel-track"
+      >
+        {platos.map((plato, i) => (
+          <div class="carousel-slide flex-shrink-0 w-72 snap-start" data-index={i}>
+            <DishCard {...plato} />
+          </div>
+        ))}
+      </div>
+
+      <!-- Navigation arrows -->
+      <button
+        id="carousel-prev"
+        class="hidden md:flex absolute -left-5 top-1/2 -translate-y-1/2 w-11 h-11 bg-white border border-cream-200 rounded-full items-center justify-center shadow-md hover:shadow-lg hover:bg-cream-50 transition-all duration-300 cursor-pointer z-10 hover:-translate-x-0.5"
+        aria-label="Anterior"
+      >
+        <svg class="w-5 h-5 text-charcoal-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+        </svg>
+      </button>
+      <button
+        id="carousel-next"
+        class="hidden md:flex absolute -right-5 top-1/2 -translate-y-1/2 w-11 h-11 bg-white border border-cream-200 rounded-full items-center justify-center shadow-md hover:shadow-lg hover:bg-cream-50 transition-all duration-300 cursor-pointer z-10 hover:translate-x-0.5"
+        aria-label="Siguiente"
+      >
+        <svg class="w-5 h-5 text-charcoal-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Dots (reactive) -->
+    <div id="carousel-dots" class="flex items-center justify-center gap-2 mt-6">
+      {platos.map((_, i) => (
+        <button
+          class="carousel-dot w-2 h-2 rounded-full transition-all duration-400 cursor-pointer"
+          data-index={i}
+          aria-label={`Ir al plato ${i + 1}`}
+        />
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  const carousel = document.getElementById('novedades-carousel');
+  const prevBtn = document.getElementById('carousel-prev');
+  const nextBtn = document.getElementById('carousel-next');
+  const dots = document.querySelectorAll('.carousel-dot');
+  const slides = document.querySelectorAll('.carousel-slide');
+  let currentIndex = 0;
+  let programmaticScroll = false;
+
+  function updateDots(index: number) {
+    if (index < 0 || index >= slides.length) return;
+    dots.forEach((dot, i) => {
+      if (i === index) {
+        dot.classList.add('bg-amber', 'w-6');
+        dot.classList.remove('bg-cream-300');
+      } else {
+        dot.classList.remove('bg-amber', 'w-6');
+        dot.classList.add('bg-cream-300');
+      }
+    });
+    currentIndex = index;
+  }
+
+  function getClosestSlideIndex(): number {
+    if (!carousel) return 0;
+    const scrollLeft = carousel.scrollLeft;
+    const cardWidth = (slides[0] as HTMLElement).offsetWidth;
+    const gap = (slides[1] as HTMLElement).offsetLeft - (slides[0] as HTMLElement).offsetLeft - cardWidth;
+    const step = cardWidth + gap;
+    return Math.round(scrollLeft / step);
+  }
+
+  function scrollToSlide(index: number) {
+    const clamped = Math.max(0, Math.min(slides.length - 1, index));
+    const slide = slides[clamped] as HTMLElement;
+    if (!slide || !carousel) return;
+    programmaticScroll = true;
+    updateDots(clamped);
+    carousel.scrollTo({ left: slide.offsetLeft, behavior: 'smooth' });
+    setTimeout(() => { programmaticScroll = false; }, 600);
+  }
+
+  let scrollEndTimer: ReturnType<typeof setTimeout>;
+  carousel?.addEventListener('scroll', () => {
+    if (programmaticScroll) return;
+    clearTimeout(scrollEndTimer);
+    scrollEndTimer = setTimeout(() => {
+      updateDots(getClosestSlideIndex());
+    }, 150);
+  }, { passive: true });
+
+  prevBtn?.addEventListener('click', () => scrollToSlide(currentIndex - 1));
+  nextBtn?.addEventListener('click', () => scrollToSlide(currentIndex + 1));
+
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => scrollToSlide(i));
+  });
+
+  updateDots(0);
+</script>
+
+<style>
+  .carousel-track::-webkit-scrollbar { display: none; }
+  .carousel-track { scrollbar-width: none; -ms-overflow-style: none; }
+</style>

@@ -1,0 +1,208 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  ogImage?: string;
+}
+
+const {
+  title = 'La Flecha de Pedro — Restaurante en Móstoles | Cocina Tradicional desde 1994',
+  description = 'Restaurante de cocina tradicional en Móstoles, Madrid. Cachopo, cochinillo asado, raciones, menú del día desde 25€. Dos locales con terraza. Reserva tu mesa: 91 614 78 90.',
+  canonical = Astro.url.href,
+  ogImage = '/images/pedro-sala.jpg',
+} = Astro.props;
+
+const siteUrl = 'https://laflechadepedro.com';
+
+const schemaRestaurant = {
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "name": "La Flecha de Pedro",
+  "alternateName": "Restaurante La Flecha",
+  "description": "Restaurante de cocina tradicional mediterránea en Móstoles, Madrid. Especialistas en cachopo, cochinillo asado, raciones y menú del día. Más de 30 años de historia familiar.",
+  "url": siteUrl,
+  "logo": `${siteUrl}/images/logo.png`,
+  "image": [
+    `${siteUrl}/images/pedro-sala.jpg`,
+    `${siteUrl}/images/plato-estrella.jpg`,
+    `${siteUrl}/images/cochinillo.jpg`
+  ],
+  "telephone": "+34916147890",
+  "email": "info@laflechadepedro.com",
+  "servesCuisine": ["Cocina Tradicional", "Cocina Mediterránea", "Cocina Española", "Asturiana"],
+  "priceRange": "€€",
+  "currenciesAccepted": "EUR",
+  "paymentAccepted": "Efectivo, Tarjeta de crédito, Tarjeta de débito",
+  "acceptsReservations": "True",
+  "menu": `${siteUrl}/carta`,
+  "hasMenu": {
+    "@type": "Menu",
+    "name": "Carta de La Flecha de Pedro",
+    "url": `${siteUrl}/carta`,
+    "hasMenuSection": [
+      {
+        "@type": "MenuSection",
+        "name": "Raciones",
+        "hasMenuItem": [
+          { "@type": "MenuItem", "name": "Jamón Ibérico", "offers": { "@type": "Offer", "price": "27.50", "priceCurrency": "EUR" } },
+          { "@type": "MenuItem", "name": "Croquetas Caseras", "offers": { "@type": "Offer", "price": "12.00", "priceCurrency": "EUR" } },
+          { "@type": "MenuItem", "name": "Pulpo", "offers": { "@type": "Offer", "price": "26.00", "priceCurrency": "EUR" } }
+        ]
+      },
+      {
+        "@type": "MenuSection",
+        "name": "Carnes",
+        "hasMenuItem": [
+          { "@type": "MenuItem", "name": "Cachopo Especial Flecha", "description": "Ternera 100% Asturiana rellena de Cecina de Tineo, Rulo de Cabra Puro y Cebolla Caramelizada", "offers": { "@type": "Offer", "price": "23.50", "priceCurrency": "EUR" } },
+          { "@type": "MenuItem", "name": "Paletilla de Cordero Lechal", "offers": { "@type": "Offer", "price": "35.00", "priceCurrency": "EUR" } },
+          { "@type": "MenuItem", "name": "Chuletón de Vaca Madurado", "offers": { "@type": "Offer", "price": "70.00", "priceCurrency": "EUR" } }
+        ]
+      },
+      {
+        "@type": "MenuSection",
+        "name": "Menú del Día",
+        "description": "Entrante, principal, bebida y postre casero. De lunes a viernes.",
+        "hasMenuItem": [
+          { "@type": "MenuItem", "name": "Menú del Día Salón", "offers": { "@type": "Offer", "price": "25.00", "priceCurrency": "EUR" } },
+          { "@type": "MenuItem", "name": "Menú del Día Terraza", "offers": { "@type": "Offer", "price": "26.50", "priceCurrency": "EUR" } }
+        ]
+      }
+    ]
+  },
+  "address": [
+    {
+      "@type": "PostalAddress",
+      "streetAddress": "P.º de Goya, 2, Local",
+      "addressLocality": "Móstoles",
+      "addressRegion": "Madrid",
+      "postalCode": "28931",
+      "addressCountry": "ES"
+    },
+    {
+      "@type": "PostalAddress",
+      "streetAddress": "C. de Juan XXIII, 9",
+      "addressLocality": "Móstoles",
+      "addressRegion": "Madrid",
+      "postalCode": "28931",
+      "addressCountry": "ES"
+    }
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 40.3260,
+    "longitude": -3.8622
+  },
+  "openingHoursSpecification": [
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], "opens": "12:00", "closes": "23:30" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "12:00", "closes": "17:00" }
+  ],
+  "areaServed": {
+    "@type": "City",
+    "name": "Móstoles",
+    "containedInPlace": {
+      "@type": "AdministrativeArea",
+      "name": "Comunidad de Madrid"
+    }
+  },
+  "founder": {
+    "@type": "Person",
+    "name": "Pedro"
+  },
+  "foundingDate": "1994",
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.5",
+    "reviewCount": "850",
+    "bestRating": "5"
+  },
+  "sameAs": [
+    "https://www.instagram.com/laflechadepedro/"
+  ]
+};
+
+const schemaBreadcrumb = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Inicio", "item": siteUrl },
+    { "@type": "ListItem", "position": 2, "name": "Carta", "item": `${siteUrl}/carta` }
+  ]
+};
+---
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+
+    <!-- Geo meta tags -->
+    <meta name="geo.region" content="ES-MD" />
+    <meta name="geo.placename" content="Móstoles, Madrid" />
+    <meta name="geo.position" content="40.3260;-3.8622" />
+    <meta name="ICBM" content="40.3260, -3.8622" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="restaurant" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={`${siteUrl}${ogImage}`} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="La Flecha de Pedro" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="restaurant:contact_info:street_address" content="P.º de Goya, 2, Local" />
+    <meta property="restaurant:contact_info:locality" content="Móstoles" />
+    <meta property="restaurant:contact_info:region" content="Madrid" />
+    <meta property="restaurant:contact_info:postal_code" content="28931" />
+    <meta property="restaurant:contact_info:country_name" content="España" />
+    <meta property="restaurant:contact_info:phone_number" content="+34 916 14 78 90" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${siteUrl}${ogImage}`} />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json" set:html={JSON.stringify(schemaRestaurant)} />
+    <script type="application/ld+json" set:html={JSON.stringify(schemaBreadcrumb)} />
+
+    <!-- Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  </head>
+  <body class="bg-texture overflow-x-hidden">
+    <slot />
+
+    <!-- Scroll-triggered reveal system -->
+    <script>
+      const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('revealed');
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
+      );
+
+      revealElements.forEach((el) => revealObserver.observe(el));
+
+      // CTA pulse after 5s idle
+      setTimeout(() => {
+        const cta = document.querySelector('.navbar-cta');
+        cta?.classList.add('animate-pulse-amber');
+      }, 5000);
+    </script>
+  </body>
+</html>

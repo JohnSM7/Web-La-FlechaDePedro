@@ -1,0 +1,24 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import CartaDinamica from '../components/CartaDinamica.vue';
+---
+<Layout title="Carta Completa — Restaurante La Flecha de Pedro en Móstoles | Raciones, Carnes, Vinos" description="Carta completa del restaurante La Flecha de Pedro en Móstoles. Raciones, cachopo asturiano, carnes a la brasa, pescados, bocadillos, postres y vinos. Menú del día desde 25€. Precios actualizados.">
+  <Navbar />
+  <main>
+    <!-- Hero banner -->
+    <section class="relative h-[40vh] min-h-[320px] flex items-center justify-center bg-charcoal-900">
+      <div class="absolute inset-0 bg-[url('/images/pedro-sala.jpg')] bg-cover bg-center opacity-40"></div>
+      <div class="relative text-center px-5">
+        <p class="font-sans text-xs tracking-[0.3em] uppercase text-amber mb-3">Nuestra carta</p>
+        <h1 class="font-display text-4xl md:text-6xl text-white">
+          Sabores de <span class="text-amber italic">siempre</span>
+        </h1>
+      </div>
+    </section>
+
+    <CartaDinamica client:only="vue" />
+  </main>
+  <Footer />
+</Layout>

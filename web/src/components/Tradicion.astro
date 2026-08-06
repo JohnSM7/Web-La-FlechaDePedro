@@ -1,0 +1,51 @@
+---
+import EyebrowTitle from './ui/EyebrowTitle.astro';
+---
+<section id="tradicion" class="py-20 md:py-32 bg-cream-50">
+  <div class="max-w-7xl mx-auto px-5 md:px-10">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+      <!-- Text -->
+      <div class="order-2 lg:order-1 reveal-left">
+        <h2 class="font-display text-3xl md:text-5xl text-charcoal-900 mb-6">
+          30 años recibiendo<br />
+          <span class="text-terracotta italic">a los tuyos</span>
+        </h2>
+        <p class="text-charcoal-700 text-base md:text-lg mb-6 max-w-lg">
+          Pedro abre la puerta cada día como el primer día. Conoce a tres generaciones
+          de familias de Móstoles que se sientan a la misma mesa, piden los mismos platos y
+          siguen diciendo lo mismo: &laquo;como en casa, pero mejor&raquo;.
+        </p>
+        <p class="text-charcoal-500 text-sm md:text-base max-w-lg">
+          Cocina tradicional mediterránea con producto de mercado. Sin atajos.
+          Sin prisa. Hecha a fuego lento, como se hacía antes.
+        </p>
+
+        <!-- Stats -->
+        <div class="flex gap-10 mt-10 pt-8 border-t border-cream-200">
+          <div>
+            <span class="font-display text-3xl md:text-4xl text-amber">30</span>
+            <p class="font-sans text-xs tracking-widest uppercase text-charcoal-500 mt-1">Años</p>
+          </div>
+          <div>
+            <span class="font-display text-3xl md:text-4xl text-amber">2</span>
+            <p class="font-sans text-xs tracking-widest uppercase text-charcoal-500 mt-1">Locales</p>
+          </div>
+          <div>
+            <span class="font-display text-3xl md:text-4xl text-amber">3</span>
+            <p class="font-sans text-xs tracking-widest uppercase text-charcoal-500 mt-1">Generaciones</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Image -->
+      <div class="order-1 lg:order-2 relative reveal-right">
+        <div class="aspect-[4/5] bg-cream-200 rounded overflow-hidden">
+          <img src="/images/grupos.jpg" alt="Clientes disfrutando de una comida en el restaurante La Flecha de Pedro en Móstoles" class="w-full h-full object-cover" loading="lazy" />
+        </div>
+        <!-- Decorative corner -->
+        <div class="absolute -bottom-4 -left-4 w-24 h-24 border-l-2 border-b-2 border-gold/40 rounded-bl-lg hidden lg:block" aria-hidden="true"></div>
+        <div class="absolute -top-4 -right-4 w-24 h-24 border-t-2 border-r-2 border-gold/40 rounded-tr-lg hidden lg:block" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,25 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Hero from '../components/Hero.astro';
+import Tradicion from '../components/Tradicion.astro';
+import PlatoEstrella from '../components/PlatoEstrella.astro';
+import Novedades from '../components/Novedades.astro';
+import MenuDiaDinamico from '../components/MenuDiaDinamico.vue';
+import TerrazaSalon from '../components/TerrazaSalon.astro';
+import Ubicaciones from '../components/Ubicaciones.astro';
+import Footer from '../components/Footer.astro';
+---
+<Layout>
+  <Navbar />
+  <main>
+    <Hero />
+    <Tradicion />
+    <PlatoEstrella />
+    <Novedades />
+    <MenuDiaDinamico client:only="vue" />
+    <TerrazaSalon />
+    <Ubicaciones />
+  </main>
+  <Footer />
+</Layout>

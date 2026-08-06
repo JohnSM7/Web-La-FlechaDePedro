@@ -1,0 +1,27 @@
+---
+interface Props {
+  variant?: 'primary' | 'secondary' | 'ghost' | 'primary-dark';
+  href?: string;
+  class?: string;
+  icon?: boolean;
+}
+
+const { variant = 'primary', href, class: className, icon = false } = Astro.props;
+
+const base = 'inline-flex items-center justify-center gap-2 px-8 py-3.5 font-sans font-semibold text-sm tracking-widest uppercase rounded transition-all duration-300 cursor-pointer';
+
+const variants: Record<string, string> = {
+  'primary':      'bg-amber text-charcoal-900 hover:bg-amber-dark hover:-translate-y-0.5 hover:shadow-lg',
+  'secondary':    'bg-transparent text-charcoal-900 border border-charcoal-900 hover:bg-charcoal-900 hover:text-white hover:-translate-y-0.5',
+  'ghost':        'bg-transparent text-terracotta hover:underline underline-offset-4 px-4',
+  'primary-dark': 'bg-amber text-charcoal-900 hover:bg-amber-dark hover:-translate-y-0.5 hover:shadow-lg hover:shadow-amber/20',
+};
+
+const Tag = href ? 'a' : 'button';
+---
+<Tag
+  href={href}
+  class:list={[base, variants[variant], className]}
+>
+  <slot />
+</Tag>

@@ -1,0 +1,136 @@
+---
+const navLinks = [
+  { label: 'Carta', href: '/carta' },
+  { label: 'Ubicaciones', href: '#ubicaciones' },
+  { label: 'Nosotros', href: '#tradicion' },
+  { label: 'Contacto', href: '#contacto' },
+];
+---
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
+  <div class="max-w-7xl mx-auto px-5 md:px-10 flex items-center justify-between h-20">
+    <!-- Logo -->
+    <a href="/" class="relative inline-block group">
+      <img src="/images/logo.png" alt="La Flecha de Pedro" class="h-10 brightness-0 invert transition-all duration-500 navbar-logo" />
+      <span class="absolute -bottom-2.5 right-0 font-sans text-[10px] tracking-[0.15em] text-amber italic navbar-accent">de Pedro</span>
+    </a>
+
+    <!-- Desktop links -->
+    <div class="hidden lg:flex items-center gap-8">
+      {navLinks.map(link => (
+        <a
+          href={link.href}
+          class="font-sans font-medium text-sm tracking-[0.05em] uppercase text-white/80 hover:text-amber transition-colors duration-250 navbar-link relative after:absolute after:bottom-[-4px] after:left-1/2 after:w-0 after:h-[1px] after:bg-amber after:transition-all after:duration-300 hover:after:w-full hover:after:left-0"
+        >
+          {link.label}
+        </a>
+      ))}
+    </div>
+
+    <!-- CTA -->
+    <a
+      href="#ubicaciones"
+      class="hidden md:inline-flex items-center gap-2 px-6 py-2.5 bg-amber text-charcoal-900 font-sans font-semibold text-xs tracking-widest uppercase rounded transition-all duration-300 hover:bg-amber-dark hover:-translate-y-0.5 hover:shadow-lg navbar-cta"
+    >
+      Reservar Mesa
+    </a>
+
+    <!-- Mobile hamburger -->
+    <button
+      id="menu-toggle"
+      class="lg:hidden flex flex-col gap-1.5 p-2 cursor-pointer"
+      aria-label="Abrir menú"
+      aria-expanded="false"
+    >
+      <span class="block w-6 h-[1.5px] bg-white transition-all duration-300 navbar-hamburger menu-line-1"></span>
+      <span class="block w-6 h-[1.5px] bg-white transition-all duration-300 navbar-hamburger menu-line-2"></span>
+      <span class="block w-4 h-[1.5px] bg-white transition-all duration-300 navbar-hamburger menu-line-3"></span>
+    </button>
+  </div>
+
+  <!-- Mobile panel -->
+  <div id="mobile-menu" class="lg:hidden fixed inset-0 top-20 bg-cream-50/98 backdrop-blur-md -translate-x-full transition-transform duration-400 ease-[cubic-bezier(0.25,0.1,0.25,1)]">
+    <div class="flex flex-col items-center gap-8 pt-16">
+      {navLinks.map(link => (
+        <a
+          href={link.href}
+          class="font-sans font-medium text-lg tracking-[0.05em] uppercase text-charcoal-900 hover:text-amber transition-colors mobile-link"
+        >
+          {link.label}
+        </a>
+      ))}
+      <a
+        href="#ubicaciones"
+        class="mt-4 px-10 py-4 bg-amber text-charcoal-900 font-sans font-semibold text-sm tracking-widest uppercase rounded transition-all duration-300 hover:bg-amber-dark"
+      >
+        Reservar Mesa
+      </a>
+    </div>
+  </div>
+</nav>
+
+<script>
+  const navbar = document.getElementById('navbar');
+  const toggle = document.getElementById('menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  let isScrolled = false;
+  let isMenuOpen = false;
+
+  function updateNavbar() {
+    if (!navbar) return;
+    const scrolled = window.scrollY > 80;
+    if (scrolled === isScrolled) return;
+    isScrolled = scrolled;
+
+    if (scrolled) {
+      navbar.classList.add('bg-cream-50/95', 'backdrop-blur-md', 'shadow-sm', 'border-b', 'border-cream-200');
+      navbar.querySelectorAll('.navbar-logo').forEach(el => {
+        el.classList.remove('invert');
+      });
+      navbar.querySelectorAll('.navbar-link').forEach(el => {
+        el.classList.remove('text-white/80');
+        el.classList.add('text-charcoal-700');
+      });
+      navbar.querySelectorAll('.navbar-hamburger').forEach(el => {
+        el.classList.remove('bg-white');
+        el.classList.add('bg-charcoal-900');
+      });
+    } else {
+      navbar.classList.remove('bg-cream-50/95', 'backdrop-blur-md', 'shadow-sm', 'border-b', 'border-cream-200');
+      navbar.querySelectorAll('.navbar-logo').forEach(el => {
+        el.classList.add('invert');
+      });
+      navbar.querySelectorAll('.navbar-link').forEach(el => {
+        el.classList.add('text-white/80');
+        el.classList.remove('text-charcoal-700');
+      });
+      navbar.querySelectorAll('.navbar-hamburger').forEach(el => {
+        el.classList.add('bg-white');
+        el.classList.remove('bg-charcoal-900');
+      });
+    }
+  }
+
+  toggle?.addEventListener('click', () => {
+    isMenuOpen = !isMenuOpen;
+    toggle.setAttribute('aria-expanded', String(isMenuOpen));
+    if (isMenuOpen) {
+      mobileMenu?.classList.remove('-translate-x-full');
+      mobileMenu?.classList.add('translate-x-0');
+    } else {
+      mobileMenu?.classList.add('-translate-x-full');
+      mobileMenu?.classList.remove('translate-x-0');
+    }
+  });
+
+  mobileMenu?.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      isMenuOpen = false;
+      toggle?.setAttribute('aria-expanded', 'false');
+      mobileMenu?.classList.add('-translate-x-full');
+      mobileMenu?.classList.remove('translate-x-0');
+    });
+  });
+
+  window.addEventListener('scroll', updateNavbar, { passive: true });
+  updateNavbar();
+</script>

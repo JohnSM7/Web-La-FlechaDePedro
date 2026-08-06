@@ -1,0 +1,53 @@
+---
+import EyebrowTitle from './ui/EyebrowTitle.astro';
+import Button from './ui/Button.astro';
+---
+<section class="relative py-20 md:py-32 bg-texture-dark overflow-hidden">
+  <!-- Subtle brand watermark -->
+  <div class="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none select-none">
+    <span class="font-display text-[20rem] text-white whitespace-nowrap">LA FLECHA</span>
+  </div>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-5 md:px-10">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+      <!-- Image (larger, 7 cols) -->
+      <div class="lg:col-span-7 relative reveal-left">
+        <div class="aspect-[4/3] bg-charcoal-800 rounded overflow-hidden">
+          <img src="/images/plato-estrella.jpg" alt="Cachopo Especial Flecha — plato estrella del restaurante La Flecha de Pedro en Móstoles" class="w-full h-full object-cover" loading="lazy" />
+        </div>
+        <!-- Price badge -->
+        <div class="absolute -bottom-5 -right-3 md:right-8 bg-amber text-charcoal-900 rounded-full w-24 h-24 flex flex-col items-center justify-center shadow-xl">
+          <span class="font-sans text-[10px] font-semibold tracking-wider uppercase">Desde</span>
+          <span class="font-display text-2xl -mt-1">28&euro;</span>
+        </div>
+      </div>
+
+      <!-- Text (5 cols) -->
+      <div class="lg:col-span-5 reveal-right">
+        <EyebrowTitle eyebrow="Plato estrella" align="left" dark />
+        <h2 class="font-display text-3xl md:text-5xl text-white mb-2">
+          Cachopo Especial
+        </h2>
+        <p class="font-display text-2xl md:text-3xl text-amber italic mb-8">
+          Flecha
+        </p>
+
+        <p class="text-white/70 text-base md:text-lg mb-4 leading-relaxed">
+          Dos filetes de ternera asturiana rellenos de jamón ibérico y queso
+          de Cabrales, rebozados a mano y fritos a la temperatura exacta.
+          Crujiente por fuera, fundido por dentro.
+        </p>
+        <p class="text-white/50 text-sm mb-10">
+          Servido con pimientos de Padrón y patatas caseras. Ración generosa para compartir.
+        </p>
+
+        <!-- Separator -->
+        <div class="h-px w-16 bg-gold/40 mb-8"></div>
+
+        <Button variant="primary-dark" href="#ubicaciones">
+          Reservar para probarlo
+        </Button>
+      </div>
+    </div>
+  </div>
+</section>
