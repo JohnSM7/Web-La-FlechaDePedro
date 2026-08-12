@@ -8,7 +8,7 @@ const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
   target="_blank"
   rel="noopener"
   id="whatsapp-btn"
-  class="fixed bottom-6 right-6 z-50 w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 opacity-0 translate-y-4"
+  class="fixed bottom-24 right-5 z-40 w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 opacity-0 translate-y-4"
   aria-label="Contactar por WhatsApp"
 >
   <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -17,9 +17,23 @@ const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
 </a>
 
 <script>
-  const btn = document.getElementById('whatsapp-btn');
+  const waBtn = document.getElementById('whatsapp-btn');
+
   setTimeout(() => {
-    btn?.classList.remove('opacity-0', 'translate-y-4');
-    btn?.classList.add('opacity-100', 'translate-y-0');
+    waBtn?.classList.remove('opacity-0', 'translate-y-4');
+    waBtn?.classList.add('opacity-100', 'translate-y-0');
   }, 2000);
+
+  const cookieBanner = document.getElementById('cookie-banner');
+  if (cookieBanner) {
+    const observer = new MutationObserver(() => {
+      const visible = cookieBanner.classList.contains('translate-y-0');
+      if (visible) {
+        waBtn?.classList.add('!bottom-44');
+      } else {
+        waBtn?.classList.remove('!bottom-44');
+      }
+    });
+    observer.observe(cookieBanner, { attributes: true, attributeFilter: ['class'] });
+  }
 </script>

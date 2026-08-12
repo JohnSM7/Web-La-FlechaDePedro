@@ -111,25 +111,28 @@ const navLinks = [
     }
   }
 
-  toggle?.addEventListener('click', () => {
-    isMenuOpen = !isMenuOpen;
-    toggle.setAttribute('aria-expanded', String(isMenuOpen));
-    if (isMenuOpen) {
+  const waBtn = document.getElementById('whatsapp-btn');
+
+  function setMenuOpen(open: boolean) {
+    isMenuOpen = open;
+    toggle?.setAttribute('aria-expanded', String(open));
+    if (open) {
       mobileMenu?.classList.remove('-translate-x-full');
       mobileMenu?.classList.add('translate-x-0');
+      waBtn?.classList.add('!hidden');
+      document.body.style.overflow = 'hidden';
     } else {
       mobileMenu?.classList.add('-translate-x-full');
       mobileMenu?.classList.remove('translate-x-0');
+      waBtn?.classList.remove('!hidden');
+      document.body.style.overflow = '';
     }
-  });
+  }
+
+  toggle?.addEventListener('click', () => setMenuOpen(!isMenuOpen));
 
   mobileMenu?.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      isMenuOpen = false;
-      toggle?.setAttribute('aria-expanded', 'false');
-      mobileMenu?.classList.add('-translate-x-full');
-      mobileMenu?.classList.remove('translate-x-0');
-    });
+    link.addEventListener('click', () => setMenuOpen(false));
   });
 
   window.addEventListener('scroll', updateNavbar, { passive: true });
