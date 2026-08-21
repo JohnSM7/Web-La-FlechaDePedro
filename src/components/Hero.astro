@@ -66,8 +66,9 @@ import Button from './ui/Button.astro';
       </a>
       <a
         href="#ubicaciones"
-        class="inline-flex items-center gap-2 px-5 py-2.5 border border-white/30 text-white font-sans font-semibold text-[10px] sm:text-xs tracking-widest uppercase rounded transition-all duration-300 hover:bg-white/10 hover:-translate-y-0.5"
+        class="relative inline-flex items-center gap-2 px-5 py-2.5 border border-amber/50 text-white font-sans font-semibold text-[10px] sm:text-xs tracking-widest uppercase rounded transition-all duration-300 hover:bg-white/10 hover:-translate-y-0.5"
       >
+        <span class="absolute -top-2.5 -right-2.5 bg-amber text-charcoal-900 font-sans font-bold text-[8px] tracking-wider uppercase px-1.5 py-0.5 rounded-full leading-none">Nuevo</span>
         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
           <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
           <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 0 1 15 0Z" />
@@ -78,13 +79,13 @@ import Button from './ui/Button.astro';
   </div>
 
   <!-- Scroll indicator -->
-  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce-gentle">
-    <span class="font-sans text-[10px] tracking-[0.2em] uppercase text-white/40">Descubre</span>
-    <svg class="w-5 h-5 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+  <div class="absolute bottom-28 md:bottom-16 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 animate-bounce-gentle z-10">
+    <span class="font-sans text-[10px] tracking-[0.2em] uppercase text-white/70">Descubre</span>
+    <svg class="w-5 h-5 text-white/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
       <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
     </svg>
   </div>
 
   <!-- Bottom gradient fade into cream -->
-  <div class="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-cream-50 to-transparent"></div>
+  <div class="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-cream-50 to-transparent"></div>
 </section>
