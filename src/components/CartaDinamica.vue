@@ -3,12 +3,19 @@
     <!-- Navigation tabs -->
     <nav class="sticky top-20 z-40 bg-cream-50/95 backdrop-blur-md border-b border-cream-200 shadow-sm">
       <div class="max-w-7xl mx-auto px-5 md:px-10 overflow-x-auto">
-        <div class="flex gap-1 py-2 min-w-max">
+        <div class="flex min-w-max">
           <a
             v-for="cat in visibleCategories"
             :key="cat.id"
             :href="`#${cat.id}`"
-            class="px-4 py-2 text-xs font-sans font-semibold tracking-widest uppercase text-charcoal-700 hover:text-amber hover:bg-amber/10 rounded transition-colors"
+            :class="[
+              'carta-nav-link px-5 py-3.5 text-xs font-sans font-semibold tracking-widest uppercase border-b-2 transition-all duration-200 text-center',
+              activeSection === cat.id
+                ? 'bg-charcoal-900 text-white border-amber'
+                : 'text-charcoal-600 border-transparent hover:text-charcoal-900'
+            ]"
+            :data-section="cat.id"
+            @click.prevent="scrollToSection(cat.id)"
           >
             {{ cat.navLabel }}
           </a>
@@ -295,6 +302,8 @@ type CartaData = Record<string, CartaItem[]>;
 
 const carta = ref<CartaData>(cartaDefecto);
 const loading = ref(false);
+const activeSection = ref('raciones');
+let isManualScroll = false;
 
 const visibleCategories = computed(() => [
   { id: 'raciones', navLabel: 'Raciones' },
@@ -308,6 +317,37 @@ const visibleCategories = computed(() => [
   { id: 'postres', navLabel: 'Postres' },
   { id: 'vinos', navLabel: 'Vinos' },
 ]);
+
+function scrollNavLink(id: string) {
+  const navLink = document.querySelector(`.carta-nav-link[data-section="${id}"]`) as HTMLElement | null;
+  if (navLink) {
+    const container = navLink.closest('.overflow-x-auto');
+    if (container) {
+      const linkLeft = navLink.offsetLeft;
+      const linkWidth = navLink.offsetWidth;
+      const containerWidth = container.clientWidth;
+      container.scrollTo({ left: linkLeft - containerWidth / 2 + linkWidth / 2, behavior: 'smooth' });
+    }
+  }
+}
+
+function scrollToSection(id: string) {
+  isManualScroll = true;
+  activeSection.value = id;
+  scrollNavLink(id);
+  const el = document.getElementById(id);
+  if (el) {
+    const navHeight = 130;
+    const top = el.getBoundingClientRect().top + window.scrollY - navHeight;
+    const html = document.documentElement;
+    html.style.scrollBehavior = 'auto';
+    window.scrollTo(0, top);
+    html.style.scrollBehavior = '';
+    setTimeout(() => { isManualScroll = false; }, 500);
+  } else {
+    isManualScroll = false;
+  }
+}
 
 async function loadCarta() {
   try {
@@ -331,5 +371,26 @@ async function loadCarta() {
   }
 }
 
-onMounted(loadCarta);
+onMounted(() => {
+  loadCarta();
+
+  const sectionIds = visibleCategories.value.map(c => c.id);
+  const observer = new IntersectionObserver(
+    (entries) => {
+      if (isManualScroll) return;
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          activeSection.value = entry.target.id;
+          scrollNavLink(entry.target.id);
+        }
+      }
+    },
+    { rootMargin: '-40% 0px -50% 0px' }
+  );
+
+  sectionIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) observer.observe(el);
+  });
+});
 </script>

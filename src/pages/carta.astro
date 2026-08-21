@@ -3,8 +3,9 @@ import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import CartaDinamica from '../components/CartaDinamica.vue';
+import MenuDiaDinamico from '../components/MenuDiaDinamico.vue';
 ---
-<Layout title="Carta Completa — Restaurante La Flecha de Pedro en Móstoles | Raciones, Carnes, Vinos" description="Carta completa del restaurante La Flecha de Pedro en Móstoles. Raciones, cachopo asturiano, carnes a la brasa, pescados, bocadillos, postres y vinos. Menú del día desde 25€. Precios actualizados.">
+<Layout title="Carta y Menú del Día — Restaurante La Flecha de Pedro en Móstoles" description="Carta completa y menú del día del restaurante La Flecha de Pedro en Móstoles. Raciones, cachopo asturiano, carnes a la brasa, pescados, postres y vinos. Menú del día desde 25€.">
   <Navbar />
   <main>
     <!-- Hero banner -->
@@ -18,7 +19,76 @@ import CartaDinamica from '../components/CartaDinamica.vue';
       </div>
     </section>
 
-    <CartaDinamica client:only="vue" />
+    <!-- Tabs Carta / Menú del Día -->
+    <div class="bg-cream-50 border-b border-cream-200">
+      <div class="max-w-4xl mx-auto px-5 md:px-10 flex justify-center gap-0">
+        <button
+          id="tab-carta"
+          class="tab-btn px-6 sm:px-10 py-3 font-sans font-semibold text-sm sm:text-base tracking-wider uppercase border-b-2 transition-all duration-200 cursor-pointer bg-charcoal-900 text-white border-amber"
+          data-tab="carta"
+        >
+          Carta
+        </button>
+        <button
+          id="tab-menu"
+          class="tab-btn px-6 sm:px-10 py-3 font-sans font-semibold text-sm sm:text-base tracking-wider uppercase border-b-2 transition-all duration-200 cursor-pointer bg-transparent text-charcoal-500 border-transparent hover:text-charcoal-700"
+          data-tab="menu"
+        >
+          Menú del Día
+        </button>
+      </div>
+    </div>
+
+    <!-- Contenido Carta -->
+    <div id="content-carta">
+      <CartaDinamica client:only="vue" />
+    </div>
+
+    <!-- Contenido Menú del Día -->
+    <div id="content-menu" class="hidden">
+      <MenuDiaDinamico client:only="vue" :showCartaLink="false" />
+    </div>
   </main>
   <Footer />
 </Layout>
+
+<script>
+  const tabs = document.querySelectorAll('.tab-btn');
+  const contentCarta = document.getElementById('content-carta');
+  const contentMenu = document.getElementById('content-menu');
+
+  function setActiveTab(tabName: string) {
+    tabs.forEach(tab => {
+      const isActive = tab.getAttribute('data-tab') === tabName;
+      if (isActive) {
+        tab.classList.add('bg-charcoal-900', 'text-white', 'border-amber');
+        tab.classList.remove('bg-transparent', 'text-charcoal-500', 'border-transparent', 'hover:text-charcoal-700');
+      } else {
+        tab.classList.remove('bg-charcoal-900', 'text-white', 'border-amber');
+        tab.classList.add('bg-transparent', 'text-charcoal-500', 'border-transparent', 'hover:text-charcoal-700');
+      }
+    });
+
+    if (tabName === 'carta') {
+      contentCarta?.classList.remove('hidden');
+      contentMenu?.classList.add('hidden');
+    } else {
+      contentCarta?.classList.add('hidden');
+      contentMenu?.classList.remove('hidden');
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const tabName = tab.getAttribute('data-tab') || 'carta';
+      setActiveTab(tabName);
+    });
+  });
+
+  // Check URL hash on load
+  if (window.location.hash === '#menu-del-dia') {
+    setActiveTab('menu');
+  }
+</script>

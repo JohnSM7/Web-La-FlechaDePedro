@@ -40,7 +40,7 @@
       </div>
 
       <!-- CTA -->
-      <div class="text-center">
+      <div v-if="showCartaLink" class="text-center">
         <a
           href="/carta"
           class="inline-flex items-center gap-2 px-6 py-3 border border-charcoal-300 text-charcoal-700 font-sans font-semibold text-xs tracking-widest uppercase rounded transition-all duration-300 hover:bg-charcoal-900 hover:text-white hover:border-charcoal-900"
@@ -61,6 +61,10 @@ import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { menuDefecto, type MenuDiaData } from '../lib/menu-defecto';
 import type { PlatoMenu } from '../lib/menu-types';
+
+const props = withDefaults(defineProps<{ showCartaLink?: boolean }>(), {
+  showCartaLink: true,
+});
 
 const menu = ref<MenuDiaData>({ ...menuDefecto });
 
