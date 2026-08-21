@@ -6,11 +6,13 @@ interface Props {
   hours: string;
   mapEmbed?: string;
   reserveHref?: string;
+  badge?: string;
 }
 
-const { name, address, phone, hours, mapEmbed, reserveHref = '#' } = Astro.props;
+const { name, address, phone, hours, mapEmbed, reserveHref = '#', badge } = Astro.props;
 ---
-<div class="bg-white border border-cream-200 rounded-lg overflow-hidden p-8 flex flex-col gap-6">
+<div class="relative bg-white border border-cream-200 rounded-lg overflow-hidden p-8 flex flex-col gap-6">
+  {badge && <span class="absolute top-4 right-4 bg-amber text-charcoal-900 font-sans font-bold text-[10px] tracking-wider uppercase px-3 py-1.5 rounded-full leading-none z-10 shadow-md">{badge}</span>}
   <!-- Map -->
   <div class="w-full aspect-[16/9] bg-cream-100 rounded overflow-hidden">
     {mapEmbed
