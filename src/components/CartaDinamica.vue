@@ -1,7 +1,7 @@
 <template>
   <div>
-    <!-- Navigation tabs -->
-    <nav class="sticky top-20 z-40 bg-cream-50/95 backdrop-blur-md border-b border-cream-200 shadow-sm">
+    <!-- Navigation tabs (fixed because overflow-x:hidden on body breaks sticky) -->
+    <nav ref="categoryNav" class="fixed top-20 left-0 right-0 z-40 bg-cream-50/95 backdrop-blur-md border-b border-cream-200 shadow-sm transition-all duration-300" :class="showCategoryNav ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'">
       <div class="max-w-7xl mx-auto px-5 md:px-10 overflow-x-auto">
         <div class="flex min-w-max">
           <a
@@ -284,7 +284,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { cartaDefecto } from '../lib/carta-defecto';
@@ -303,6 +303,8 @@ type CartaData = Record<string, CartaItem[]>;
 const carta = ref<CartaData>(cartaDefecto);
 const loading = ref(false);
 const activeSection = ref('raciones');
+const showCategoryNav = ref(false);
+const categoryNav = ref<HTMLElement | null>(null);
 let isManualScroll = false;
 
 const visibleCategories = computed(() => [
@@ -371,8 +373,17 @@ async function loadCarta() {
   }
 }
 
+function handleScroll() {
+  const contentCarta = document.getElementById('content-carta');
+  if (contentCarta) {
+    showCategoryNav.value = contentCarta.getBoundingClientRect().top <= 80;
+  }
+}
+
 onMounted(() => {
   loadCarta();
+  window.addEventListener('scroll', handleScroll, { passive: true });
+  handleScroll();
 
   const sectionIds = visibleCategories.value.map(c => c.id);
   const observer = new IntersectionObserver(
@@ -392,5 +403,9 @@ onMounted(() => {
     const el = document.getElementById(id);
     if (el) observer.observe(el);
   });
+});
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll);
 });
 </script>
