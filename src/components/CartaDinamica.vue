@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Navigation tabs (fixed because overflow-x:hidden on body breaks sticky) -->
-    <nav ref="categoryNav" class="fixed left-0 right-0 z-30 bg-cream-50/95 backdrop-blur-md border-b border-cream-200 shadow-sm transition-all duration-300" :style="{ top: navTopPx }" :class="showCategoryNav ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'">
+    <nav ref="categoryNav" class="fixed left-0 right-0 z-30 bg-cream-50/95 backdrop-blur-md border-b border-cream-200 shadow-sm" :style="{ top: navTopPx }">
       <div class="max-w-7xl mx-auto px-5 md:px-10 overflow-x-auto">
         <div class="flex min-w-max">
           <a
@@ -284,7 +284,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { cartaDefecto } from '../lib/carta-defecto';
@@ -303,7 +303,6 @@ type CartaData = Record<string, CartaItem[]>;
 const carta = ref<CartaData>(cartaDefecto);
 const loading = ref(false);
 const activeSection = ref('raciones');
-const showCategoryNav = ref(false);
 const categoryNav = ref<HTMLElement | null>(null);
 const navTopPx = ref('128px');
 let isManualScroll = false;
@@ -377,22 +376,16 @@ async function loadCarta() {
   }
 }
 
-function handleScroll() {
-  const contentCarta = document.getElementById('content-carta');
+function updateNavPosition() {
   const tabsBar = document.getElementById('tabs-bar');
-  if (contentCarta) {
-    showCategoryNav.value = contentCarta.getBoundingClientRect().top <= 80;
-  }
   if (tabsBar) {
-    const tabsBottom = tabsBar.getBoundingClientRect().bottom;
-    navTopPx.value = Math.max(tabsBottom, 80) + 'px';
+    navTopPx.value = tabsBar.getBoundingClientRect().bottom + 'px';
   }
 }
 
 onMounted(() => {
   loadCarta();
-  window.addEventListener('scroll', handleScroll, { passive: true });
-  handleScroll();
+  updateNavPosition();
 
   const sectionIds = visibleCategories.value.map(c => c.id);
   const observer = new IntersectionObserver(
@@ -414,7 +407,4 @@ onMounted(() => {
   });
 });
 
-onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll);
-});
 </script>
