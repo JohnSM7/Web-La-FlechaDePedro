@@ -20,7 +20,7 @@ import MenuDiaDinamico from '../components/MenuDiaDinamico.vue';
     </section>
 
     <!-- Tabs Carta / Menú del Día -->
-    <div class="bg-cream-50 border-b border-cream-200">
+    <div id="tabs-bar" class="bg-cream-50 border-b border-cream-200 transition-all duration-300">
       <div class="max-w-4xl mx-auto px-5 md:px-10 flex justify-center gap-0">
         <button
           id="tab-carta"
@@ -38,6 +38,7 @@ import MenuDiaDinamico from '../components/MenuDiaDinamico.vue';
         </button>
       </div>
     </div>
+    <div id="tabs-spacer" class="hidden"></div>
 
     <!-- Contenido Carta -->
     <div id="content-carta">
@@ -91,4 +92,35 @@ import MenuDiaDinamico from '../components/MenuDiaDinamico.vue';
   if (window.location.hash === '#menu-del-dia') {
     setActiveTab('menu');
   }
+
+  // Fix tabs bar on scroll
+  const tabsBar = document.getElementById('tabs-bar');
+  const tabsSpacer = document.getElementById('tabs-spacer');
+  let tabsFixed = false;
+  let tabsOriginalTop = 0;
+
+  function measureTabsPosition() {
+    if (tabsBar && !tabsFixed) {
+      tabsOriginalTop = tabsBar.getBoundingClientRect().top + window.scrollY;
+    }
+  }
+
+  function handleTabsScroll() {
+    if (!tabsBar || !tabsSpacer) return;
+    const threshold = tabsOriginalTop - 80;
+    if (window.scrollY >= threshold && !tabsFixed) {
+      tabsFixed = true;
+      const h = tabsBar.offsetHeight;
+      tabsBar.classList.add('fixed', 'top-20', 'left-0', 'right-0', 'z-40', 'backdrop-blur-md');
+      tabsSpacer.classList.remove('hidden');
+      tabsSpacer.style.height = h + 'px';
+    } else if (window.scrollY < threshold && tabsFixed) {
+      tabsFixed = false;
+      tabsBar.classList.remove('fixed', 'top-20', 'left-0', 'right-0', 'z-40', 'backdrop-blur-md');
+      tabsSpacer.classList.add('hidden');
+    }
+  }
+
+  setTimeout(measureTabsPosition, 100);
+  window.addEventListener('scroll', handleTabsScroll, { passive: true });
 </script>

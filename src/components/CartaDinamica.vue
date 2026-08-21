@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Navigation tabs (fixed because overflow-x:hidden on body breaks sticky) -->
-    <nav ref="categoryNav" class="fixed top-20 left-0 right-0 z-40 bg-cream-50/95 backdrop-blur-md border-b border-cream-200 shadow-sm transition-all duration-300" :class="showCategoryNav ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'">
+    <nav ref="categoryNav" class="fixed left-0 right-0 z-30 bg-cream-50/95 backdrop-blur-md border-b border-cream-200 shadow-sm transition-all duration-300" :style="{ top: navTopPx }" :class="showCategoryNav ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'">
       <div class="max-w-7xl mx-auto px-5 md:px-10 overflow-x-auto">
         <div class="flex min-w-max">
           <a
@@ -305,6 +305,7 @@ const loading = ref(false);
 const activeSection = ref('raciones');
 const showCategoryNav = ref(false);
 const categoryNav = ref<HTMLElement | null>(null);
+const navTopPx = ref('128px');
 let isManualScroll = false;
 
 const visibleCategories = computed(() => [
@@ -339,7 +340,10 @@ function scrollToSection(id: string) {
   scrollNavLink(id);
   const el = document.getElementById(id);
   if (el) {
-    const navHeight = 130;
+    const tabsBar = document.getElementById('tabs-bar');
+    const tabsH = tabsBar ? tabsBar.offsetHeight : 48;
+    const catNavH = categoryNav.value ? categoryNav.value.offsetHeight : 52;
+    const navHeight = 80 + tabsH + catNavH;
     const top = el.getBoundingClientRect().top + window.scrollY - navHeight;
     const html = document.documentElement;
     html.style.scrollBehavior = 'auto';
@@ -375,8 +379,13 @@ async function loadCarta() {
 
 function handleScroll() {
   const contentCarta = document.getElementById('content-carta');
+  const tabsBar = document.getElementById('tabs-bar');
   if (contentCarta) {
     showCategoryNav.value = contentCarta.getBoundingClientRect().top <= 80;
+  }
+  if (tabsBar) {
+    const tabsBottom = tabsBar.getBoundingClientRect().bottom;
+    navTopPx.value = Math.max(tabsBottom, 80) + 'px';
   }
 }
 
